@@ -15,7 +15,7 @@
           particular module and are used by multiple modules.
 
 @note     This file is part of the urls_organizer project.
-            
+
 @requires Python 3.6 or greater
           termcolor
           prettytable
@@ -23,10 +23,9 @@
 import os
 import subprocess
 from typing import List
+from pathlib import Path
 
-from termcolor import cprint  # pip install termcolor
 from prettytable import PrettyTable  # pip install prettytable
-
 
 # ANSI escape codes for text colors
 COLORS = {
@@ -85,31 +84,7 @@ RESET = "\033[0m"
 CLEAR = "\033[2J\033[H"
 
 
-print_colored = lambda text, color: cprint(text, color)
-
-
-print_list_with_commas = lambda l: print(", ".join(l)) if l else None
-
-
-def grab(text: str, start: str, end: str = "\n") -> str:
-    """
-    Extract a string between a given start and end string within a larger string.
-
-    Args:
-        text (str): The larger string to search within.
-        start (str): The starting string to search for.
-        end (str, optional): The ending string to search for. Defaults to "\n".
-
-    Returns:
-        str: The string between the start and end strings, if found. Otherwise, an empty string.
-
-    """
-    # Find the starting index of the desired substring
-    start_index = text.find(start)
-    # Find the ending index of the desired substring
-    end_index = text.find(end, start_index + len(start))
-    # Return the substring between the start and end indices.
-    return text[start_index + len(start) : end_index]
+list_with_commas = lambda l: ", ".join(l) if l else None
 
 
 def ensure_exists(*paths: str) -> None:
@@ -118,14 +93,18 @@ def ensure_exists(*paths: str) -> None:
     they do not.
 
     Args:
-        *dirs: str: The directories or files to check/create.
+        *paths: str: The directories or files to check/create.
     """
     for path in paths:
-        if not os.path.exists(path):
-            if os.path.isdir(path):
-                os.makedirs(path)
-            else:
-                open(path, "a").close()
+        if "." in path:  # argument is a file
+            real_path = Path(path).resolve()
+            # Create the directory if it does not exist
+            Path(real_path).parent.mkdir(parents=True, exist_ok=True)
+            # Create the file if it does not exist
+            Path(real_path).touch()
+        else:  # argument is a directory
+            # Create the directory if it does not exist
+            Path(path).mkdir(parents=True)
 
 
 def remove_duplicates(l: list) -> list:
@@ -179,6 +158,8 @@ def run_shell_command(
 ) -> None:
     """
     Run a command in the shell and print the output.
+
+    Reference: https://www.scrapingbee.com/blog/python-wget/
 
     Args:
         cmd (str): The command to run.
@@ -252,13 +233,14 @@ def read_file(file_path: str) -> str:
 
     Raises:
         FileNotFoundError: If the specified file cannot be found.
+        PermissionError: If the specified file cannot be read.
     """
     try:
         # Open the file with utf-8 encoding and return the contents
         with open(file_path, "r", encoding="utf-8") as f:
             return f.read().splitlines()
-    except FileNotFoundError:
-        raise FileNotFoundError(f"File {file_path} not found")
+    except (FileNotFoundError, PermissionError):
+        raise
 
 
 def write_file(file_path: str, content: str) -> None:

@@ -260,7 +260,7 @@ repo="urls_organizer"
 verbose "Creating temporary directory"
 tmpDir="$(mktemp -d)"
 
-binaryLocation="$HOME/.local/bin"
+binaryLocation="$HOME/.local/bin/scripts"
 verbose "Binary location: $binaryLocation"
 mkdir -p $binaryLocation
 
@@ -525,6 +525,7 @@ rm "$binaryLocation/$binaryName" > /dev/null 2>&1 || true
 # Create symlink to binary
 verbose "Creating symlink '$binaryLocation/$binaryName' -> '$binary'"
 ln -s "$installLocation/$repo"*/"$binary" "$binaryLocation/$binaryName"
+ln -s "$installLocation/$repo"*/personal_utils.py "$binaryLocation/personal_utils.py"
 # Check if ln created a broken symlink
 if [ ! -e "$binaryLocation/$binaryName" ]; then
   error "Could not create symlink"
@@ -541,7 +542,7 @@ if ! echo "$PATH" | grep -q "$binaryLocation"; then
   # Append binaryLocation to .profile, if it is not already in .profile
   if ! grep -q -s "export PATH=$binaryLocation:\$PATH" "$HOME/.profile"; then
     verbose "Appending $binaryLocation to $HOME/.profile"
-    echo "export PATH=$binaryLocation:\$PATH" >>"$HOME/.profile"
+    echo "export PATH=$binaryLocation:\$PATH" >> "$HOME/.profile"
   fi
 fi
 
@@ -550,7 +551,7 @@ if [ -f "$installLocation/$repo"*/requirements.txt ]; then
   info "Installing dependencies from requirements.txt"
   cmd="pip3 install -r $installLocation/$repo*/requirements.txt"
   verbose "$cmd"
-  $cmd
+  $cmd > /dev/null 2>&1
   if [ $? -ne 0 ]; then
     error "Error while running the pip3 command."
     exit 1

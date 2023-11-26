@@ -1,7 +1,0 @@
-exitstatus==2.4.0
-natsort==8.3.1
-prettytable==3.7.0
-requests==2.31.0
-termcolor==2.3.0
-tqdm==4.64.1
-validators==0.21.0

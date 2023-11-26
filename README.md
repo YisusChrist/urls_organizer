@@ -16,7 +16,7 @@
     <a href="https://github.com/yisuschrist/urls_organizer/pulls">
         <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/yisuschrist/urls_organizer?color=0088ff">&nbsp;&nbsp;&nbsp;
     </a>
-    <a href="https://opensource.org/license/gpl-2-0/">
+    <a href="https://opensource.org/license/gpl-3-0/">
         <img alt="License" src="https://img.shields.io/github/license/yisuschrist/urls_organizer?color=0088ff">
     </a>
     <!--
@@ -26,7 +26,6 @@
     -->
 </p>
 
-<br>
 
 <p align="center">
     <a href="https://github.com/yisuschrist/urls_organizer/issues/new/choose">Report Bug</a>
@@ -38,11 +37,13 @@
     <a href="https://github.com/yisuschrist/urls_organizer/security/policy#reporting-a-vulnerability">Report security bug</a>
 </p>
 
+![Alt](https://repobeats.axiom.co/api/embed/c3525653303a46af833c14fd7587342852c3d494.svg "Repobeats analytics image")
+
 <br>
 
-Urls_organizer is a Pytbashhon program that helps to organize a list of URLs. It can read URLs from a file or add a single URL, removes duplicate URLs, and sorts them in natural order.
+Urls_organizer is a Python program that helps to organize a list of URLs. It can read URLs from a file or add a single URL, removes duplicate URLs, and sorts them in natural order.
 
-Additionally, the program can validate the URLs by sending a GET request and checking for invalid URLs. The program uses **multiprocessing to speed up the validation process**, and the results are saved in a separate file. The output URL list can be saved in a file specified by the user. The program takes command-line arguments for its inputs and parameters.
+Additionally, the program can validate the URLs by sending a GET request and checking for the ones that are not available anymore. The program uses **multiprocessing to speed up the validation process**, and the results are saved in a separate file. The output URL list can be saved in a file specified by the user. The program takes command-line arguments for its inputs and parameters.
 
 The purpose of the program is to assist users in managing their lists of URLs by keeping them organized and validating their accuracy.
 
@@ -53,26 +54,32 @@ The purpose of the program is to assist users in managing their lists of URLs by
 
 - [Requirements](#requirements)
 - [Installation](#installation)
+    - [Manual installation](#manual-installation)
 - [Execution](#execution)
+    - [Example of execution](#example-of-execution)
 - [Contributors](#contributors)
-  - [How do I contribute to Urls_organizer?](#how-do-i-contribute-to-urls_organizer)
+  - [How do I contribute to Urls\_organizer?](#how-do-i-contribute-to-urls_organizer)
+- [TODO](#todo)
+- [License](#license)
 - [Credits](#credits)
 
 </details>
-
-<br>
 
 ## Requirements
 
 Here's a breakdown of the packages needed and their versions:
 
-- [exitstatus](https://pypi.org/project/exitstatus/) (version 2.4.0)
-- [natsort](https://pypi.org/project/natsort/) (version 8.3.1)
-- [prettytable](https://pypi.org/project/prettytable/) (version 3.7.0)
-- [requests](https://pypi.org/project/requests/) (version 2.29.0)
-- [termcolor](https://pypi.org/project/termcolor/) (version 2.3.0)
-- [tqdm](https://pypi.org/project/tqdm/) (version 4.64.1)
-- [validators](https://pypi.org/project/validators/) (version 0.20.0)
+- [natsort](https://pypi.org/project/natsort) (version 8.4.0)
+- [platformdirs](https://pypi.org/project/platformdirs) (version 3.11.0)
+- [prettytable](https://pypi.org/project/prettytable) (version 3.9.0)
+- [pyfiglet](https://pypi.org/project/pyfiglet) (version 0.8.post1)
+- [requests](https://pypi.org/project/requests) (version 2.31.0)
+- [rich](https://pypi.org/project/rich) (version 13.5.2)
+- [rich-argparse-plus](https://pypi.org/project/rich-argparse-plus) (version 0.3.1.4)
+- [string-grab](https://pypi.org/project/string-grab) (version 1.3.0)
+- [termcolor](https://pypi.org/project/termcolor) (version 2.3.0)
+- [tqdm](https://pypi.org/project/tqdm) (version 4.66.1)
+- [validators](https://pypi.org/project/validators) (version 0.22.0)
 
 These packages can be installed using the following command:
 
@@ -127,33 +134,33 @@ The program can now be ran from a terminal with the `urls_organizer` command.
 To run the `urls_organizer` script, you can use the following command:
 
 ```bash
-python3 urls_organizer.py [OPTIONS]
+python3 -m urls_organizer [OPTIONS]
 ```
 
 where `[OPTIONS]` are the command line options described below:
 
 ```
-usage: urls_organizer [-sf SAVEFILE] [-rf READFILE] [-u URL] [-w NUMWORKERS] [-h] [-t] [-d] [-v]
+usage: urls_organizer [-sf SAVEFILE] [-rf READFILE] [-u URL] [-w NUMWORKERS] [-h] [-v] [-d] [-V]
 
-Organize your URL saved
+Organize your URL saved like a pro!
 
-Options to add URLs:
-  -sf SAVEFILE, --saveFile SAVEFILE
+OPTIONS TO ADD URLS
+  -sf, --saveFile SAVEFILE
                         File with the URLs result. Argument is required
-  -rf READFILE, --readFile READFILE
+  -rf, --readFile READFILE
                         File with the URLs to add. Argument is required if -u is not used.
-  -u URL, --url URL     Single URL to add. Argument is required if -rf is not used.
-  -w NUMWORKERS, --numWorkers NUMWORKERS
+  -u, --url URL         Single URL to add. Argument is required if -rf is not used.
+  -w, --numWorkers NUMWORKERS
                         Number of workers to use. Default is the number of CPU cores * 2.
 
-Miscellaneous Options:
+MISCELLANEOUS OPTIONS
   -h, --help            Show this help message and exit.
-  -t, --verbose         Show log messages on screen. Default is False.
+  -v, --verbose         Show log messages on screen. Default is False.
   -d, --debug           Activate debug logs. Default is False.
-  -v, --version         Show version number and exit.
+  -V, --version         Show version number and exit.
 ```
 
-#### Example of execution:
+#### Example of execution
 
 Content of _`urls.txt`_:
 
@@ -185,17 +192,19 @@ https://www.facebook.coma
 
 ## Contributors
 
-<a href="https://github.com/yisuschrist/urls_organizer/graphs/contributors"><img src="https://contrib.rocks/image?repo=yisuschrist/urls_organizer" /></a>
+<a href="https://github.com/yisuschrist/urls_organizer/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=yisuschrist/urls_organizer" />
+</a>
 
 ### How do I contribute to Urls_organizer?
 
-Before you participate in our delightful community, please read the [code of conduct](CODE_OF_CONDUCT.md).
+Before you participate in our delightful community, please read the [code of conduct](.github/CODE_OF_CONDUCT.md).
 
 I'm far from being an expert and suspect there are many ways to improve – if you have ideas on how to make the configuration easier to maintain (and faster), don't hesitate to fork and send pull requests!
 
 We also need people to test out pull requests. So take a look through [the open issues](https://github.com/yisuschrist/urls_organizer/issues) and help where you can.
 
-See [Contributing](CONTRIBUTING.md) for more details.
+See [Contributing](.github/CONTRIBUTING.md) for more details.
 
 ## TODO
 
@@ -205,6 +214,10 @@ Planing to add the following features:
 - [ ] Add a full documentation in Wiki section
 - [ ] Add uninstall bash script
 - [ ] Add a Changelog / Release Notes
+
+## License
+
+Urls_organizer is released under the [GPL-3.0 License](https://opensource.org/licenses/GPL-3.0)
 
 ## Credits
 
