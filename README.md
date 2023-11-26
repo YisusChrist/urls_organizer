@@ -26,6 +26,7 @@
     -->
 </p>
 
+<br>
 
 <p align="center">
     <a href="https://github.com/yisuschrist/urls_organizer/issues/new/choose">Report Bug</a>
@@ -36,6 +37,8 @@
     ·
     <a href="https://github.com/yisuschrist/urls_organizer/security/policy#reporting-a-vulnerability">Report security bug</a>
 </p>
+
+<br>
 
 ![Alt](https://repobeats.axiom.co/api/embed/c3525653303a46af833c14fd7587342852c3d494.svg "Repobeats analytics image")
 
@@ -54,11 +57,11 @@ The purpose of the program is to assist users in managing their lists of URLs by
 
 - [Requirements](#requirements)
 - [Installation](#installation)
-    - [Manual installation](#manual-installation)
+  - [Manual installation](#manual-installation)
 - [Execution](#execution)
-    - [Example of execution](#example-of-execution)
+  - [Example of execution](#example-of-execution)
 - [Contributors](#contributors)
-  - [How do I contribute to Urls\_organizer?](#how-do-i-contribute-to-urls_organizer)
+  - [How do I contribute to Urls_organizer?](#how-do-i-contribute-to-urls_organizer)
 - [TODO](#todo)
 - [License](#license)
 - [Credits](#credits)
