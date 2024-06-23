@@ -142,26 +142,7 @@ python3 -m urls_organizer [OPTIONS]
 
 where `[OPTIONS]` are the command line options described below:
 
-```
-usage: urls_organizer [-sf SAVEFILE] [-rf READFILE] [-u URL] [-w NUMWORKERS] [-h] [-v] [-d] [-V]
-
-Organize your URL saved like a pro!
-
-OPTIONS TO ADD URLS
-  -sf, --saveFile SAVEFILE
-                        File with the URLs result. Argument is required
-  -rf, --readFile READFILE
-                        File with the URLs to add. Argument is required if -u is not used.
-  -u, --url URL         Single URL to add. Argument is required if -rf is not used.
-  -w, --numWorkers NUMWORKERS
-                        Number of workers to use. Default is the number of CPU cores * 2.
-
-MISCELLANEOUS OPTIONS
-  -h, --help            Show this help message and exit.
-  -v, --verbose         Show log messages on screen. Default is False.
-  -d, --debug           Activate debug logs. Default is False.
-  -V, --version         Show version number and exit.
-```
+![options](https://i.imgur.com/yZAnJky.png)
 
 #### Example of execution
 
