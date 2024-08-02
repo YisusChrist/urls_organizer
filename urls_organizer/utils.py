@@ -17,15 +17,10 @@
 @note     This file is part of the urls_organizer project.
 
 @requires Python 3.6 or greater
-          termcolor
-          prettytable
 """
 import os
 import subprocess
-from typing import List
 from pathlib import Path
-
-from prettytable import PrettyTable  # pip install prettytable
 
 # ANSI escape codes for text colors
 COLORS = {
@@ -147,15 +142,13 @@ def run_cmd(cmd) -> str:
         function to run the command
     """
     try:
-        output = subprocess.check_output(cmd, shell=True)
+        output: bytes = subprocess.check_output(cmd, shell=True)
     except subprocess.CalledProcessError:
-        output = ""
+        output = b""
     return output.decode("utf-8").strip()
 
 
-def run_shell_command(
-    cmd: str, verbose: bool = False, *args, **kwargs
-) -> None:
+def run_shell_command(cmd: str, verbose: bool = False, *args, **kwargs) -> None:
     """
     Run a command in the shell and print the output.
 
@@ -221,7 +214,7 @@ def get_file_size(file_path: str) -> int:
     return os.path.getsize(file_path)
 
 
-def read_file(file_path: str) -> str:
+def read_file(file_path: str) -> list[str]:
     """
     Read the contents of a file.
 
@@ -238,9 +231,10 @@ def read_file(file_path: str) -> str:
     try:
         # Open the file with utf-8 encoding and return the contents
         with open(file_path, "r", encoding="utf-8") as f:
-            return f.read().splitlines()
+            content: list[str] = f.read().splitlines()
     except (FileNotFoundError, PermissionError):
         raise
+    return content
 
 
 def write_file(file_path: str, content: str) -> None:
@@ -303,23 +297,3 @@ def merge_dicts(*dicts: dict) -> dict:
     for d in dicts:
         merged.update(d)
     return merged
-
-
-def print_table(data: List[List[str]], headers: List[str] = []) -> None:
-    """
-    Prints a table of data using the prettytable module.
-
-    Args:
-        data (List[List[str]]): A list of rows, where each row is a list of
-            strings representing the columns.
-        headers (List[str]): A list of header strings for the table. Optional.
-
-    Returns:
-        None
-    """
-    table = PrettyTable()
-    if headers:
-        table.field_names = headers
-    for row in data:
-        table.add_row(row)
-    print(table)
