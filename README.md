@@ -19,23 +19,18 @@
     <a href="https://opensource.org/license/gpl-3-0/">
         <img alt="License" src="https://img.shields.io/github/license/yisuschrist/urls_organizer?color=0088ff">
     </a>
-    <!--
-    <a href="https://github.com/yisuschrist/urls_organizer/issues/contributors">
-        <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/yisuschrist/urls_organizer" />
-    </a>
-    -->
 </p>
 
 <br>
 
 <p align="center">
-    <a href="https://github.com/yisuschrist/urls_organizer/issues/new/choose">Report Bug</a>
+    <a href="https://github.com/YisusChrist/urls_organizer/issues/new?assignees=YisusChrist&labels=bug&projects=&template=bug_report.yml">Report Bug</a>
     ·
-    <a href="https://github.com/yisuschrist/urls_organizer/issues/new/choose">Request Feature</a>
+    <a href="https://github.com/YisusChrist/urls_organizer/issues/new?assignees=YisusChrist&labels=feature&projects=&template=feature_request.yml">Request Feature</a>
     ·
-    <a href="https://github.com/yisuschrist/urls_organizer/discussions">Ask Question</a>
+    <a href="https://github.com/YisusChrist/urls_organizer/issues/new?assignees=YisusChrist&labels=question&projects=&template=question.yml">Ask Question</a>
     ·
-    <a href="https://github.com/yisuschrist/urls_organizer/security/policy#reporting-a-vulnerability">Report security bug</a>
+    <a href="https://github.com/YisusChrist/urls_organizer/security/policy#reporting-a-vulnerability">Report security bug</a>
 </p>
 
 <br>
@@ -44,7 +39,7 @@
 
 <br>
 
-Urls_organizer is a Python program that helps to organize a list of URLs. It can read URLs from a file or add a single URL, removes duplicate URLs, and sorts them in natural order.
+`urls_organizer` is a Python program that helps to organize a list of URLs. It can read URLs from a file or add a single URL, removes duplicate URLs, and sorts them in natural order.
 
 Additionally, the program can validate the URLs by sending a GET request and checking for the ones that are not available anymore. The program uses **multiprocessing to speed up the validation process**, and the results are saved in a separate file. The output URL list can be saved in a file specified by the user. The program takes command-line arguments for its inputs and parameters.
 
@@ -57,6 +52,8 @@ The purpose of the program is to assist users in managing their lists of URLs by
 
 - [Requirements](#requirements)
 - [Installation](#installation)
+  - [Direct installation](#direct-installation)
+  - [From Pypi](#from-pypi)
   - [Manual installation](#manual-installation)
 - [Execution](#execution)
   - [Example of execution](#example-of-execution)
@@ -72,31 +69,24 @@ The purpose of the program is to assist users in managing their lists of URLs by
 
 Here's a breakdown of the packages needed and their versions:
 
-- [natsort](https://pypi.org/project/natsort) (version 8.4.0)
-- [platformdirs](https://pypi.org/project/platformdirs) (version 3.11.0)
-- [prettytable](https://pypi.org/project/prettytable) (version 3.9.0)
-- [pyfiglet](https://pypi.org/project/pyfiglet) (version 0.8.post1)
-- [requests](https://pypi.org/project/requests) (version 2.31.0)
-- [rich](https://pypi.org/project/rich) (version 13.5.2)
-- [rich-argparse-plus](https://pypi.org/project/rich-argparse-plus) (version 0.3.1.4)
-- [string-grab](https://pypi.org/project/string-grab) (version 1.3.0)
-- [termcolor](https://pypi.org/project/termcolor) (version 2.3.0)
-- [tqdm](https://pypi.org/project/tqdm) (version 4.66.1)
-- [validators](https://pypi.org/project/validators) (version 0.22.0)
+- [poetry](https://pypi.org/project/poetry) >= 1.7.1 (_only for manual installation_)
+- [natsort](https://pypi.org/project/natsort) >= 8.4.0
+- [platformdirs](https://pypi.org/project/platformdirs) >= 3.11.0
+- [pyfiglet](https://pypi.org/project/pyfiglet) >= 1.0.2
+- [requests](https://pypi.org/project/requests) >= 2.31.0
+- [rich](https://pypi.org/project/rich) >= 13.5.2
+- [rich-argparse-plus](https://pypi.org/project/rich-argparse-plus) >= 0.3.1.4
+- [tqdm](https://pypi.org/project/tqdm) >= 4.66.1
+- [validators](https://pypi.org/project/validators) >= 0.22.0
 
-These packages can be installed using the following command:
-
-```bash
-pip3 install -r requirements.txt
-```
-
-This will install all the packages and their dependencies listed in the requirements.txt file. Make sure you have Python and pip installed on your system before running this command.
-
-> Note: The software has been developed and tested using Python 3.10.10. The minimum required version to run the software is Python 3.6. Although the software may work with previous versions, it is not guaranteed.
+> [!NOTE]
+> The software has been developed and tested using Python `3.10.10`. The minimum required version to run the software is Python 3.6. Although the software may work with previous versions, it is not guaranteed.
 
 ## Installation
 
-Urls_organizer can be installed by running one of the following commands in your terminal. You can install this via the command-line with either `curl`, `wget` or another similar tool.
+### Direct installation
+
+`urls_organizer` can be installed by running one of the following commands in your terminal. You can install this via the command-line with either `curl`, `wget` or another similar tool.
 
 | Method    | Command                                                                                              |
 | :-------- | :--------------------------------------------------------------------------------------------------- |
@@ -104,64 +94,59 @@ Urls_organizer can be installed by running one of the following commands in your
 | **wget**  | `sh -c "$(wget -O- https://raw.githubusercontent.com/yisuschrist/urls_organizer/main/install.sh)"`   |
 | **fetch** | `sh -c "$(fetch -o - https://raw.githubusercontent.com/yisuschrist/urls_organizer/main/install.sh)"` |
 
-#### Manual installation
+### From Pypi
+
+`urls_organizer` can be installed easily as a PyPI package. Just run the following command:
+
+```bash
+pip3 install urls_organizer
+```
+
+> [!IMPORTANT]
+> For best practices and to avoid potential conflicts with your global Python environment, it is strongly recommended to install this program within a virtual environment. Avoid using the --user option for global installations. We highly recommend using [pipx](https://pypi.org/project/pipx) for a safe and isolated installation experience. Therefore, the appropriate command to install `urls_organizer` would be:
+>
+> ```bash
+> pipx install urls_organizer
+> ```
+
+### Manual installation
 
 If you prefer to install the program manually, follow these steps:
 
-> Note: This will install the version from the latest commit, not the latest release.
+> [!WARNING]
+> This will install the version from the latest commit, not the latest release.
 
 1. Download the latest version of [urls_organizer](https://github.com/yisuschrist/urls_organizer) from this repository:
 
-```bash
-git clone https://github.com/yisuschrist/urls_organizer
-cd urls_organizer
-```
+   ```bash
+   git clone https://github.com/yisuschrist/urls_organizer
+   cd urls_organizer
+   ```
 
 2. Install the dependencies:
 
-```bash
-pip3 install -r requirements.txt
-```
+   ```bash
+   poetry install
+   ```
 
 3. Run the following commands to install urls_organizer in your `/usr/bin/` directory:
 
-```bash
-sudo chmod +x urls_organizer
-sudo cp urls_organizer /usr/bin/
-```
-
-The program can now be ran from a terminal with the `urls_organizer` command.
+   ```bash
+   sudo chmod +x urls_organizer
+   sudo cp urls_organizer /usr/bin/
+   ```
 
 ## Execution
 
 To run the `urls_organizer` script, you can use the following command:
 
 ```bash
-python3 -m urls_organizer [OPTIONS]
+urls_organizer [OPTIONS]
 ```
 
 where `[OPTIONS]` are the command line options described below:
 
-```
-usage: urls_organizer [-sf SAVEFILE] [-rf READFILE] [-u URL] [-w NUMWORKERS] [-h] [-v] [-d] [-V]
-
-Organize your URL saved like a pro!
-
-OPTIONS TO ADD URLS
-  -sf, --saveFile SAVEFILE
-                        File with the URLs result. Argument is required
-  -rf, --readFile READFILE
-                        File with the URLs to add. Argument is required if -u is not used.
-  -u, --url URL         Single URL to add. Argument is required if -rf is not used.
-  -w, --numWorkers NUMWORKERS
-                        Number of workers to use. Default is the number of CPU cores * 2.
-
-MISCELLANEOUS OPTIONS
-  -h, --help            Show this help message and exit.
-  -v, --verbose         Show log messages on screen. Default is False.
-  -d, --debug           Activate debug logs. Default is False.
-  -V, --version         Show version number and exit.
-```
+![options](https://i.imgur.com/yZAnJky.png)
 
 #### Example of execution
 
@@ -220,7 +205,7 @@ Planing to add the following features:
 
 ## License
 
-Urls_organizer is released under the [GPL-3.0 License](https://opensource.org/licenses/GPL-3.0)
+`urls_organizer` is released under the [GPL-3.0 License](https://opensource.org/licenses/GPL-3.0)
 
 ## Credits
 
