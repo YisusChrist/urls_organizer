@@ -1,4 +1,5 @@
 import hashlib
+import os
 import signal
 from argparse import Namespace
 from functools import lru_cache
@@ -10,9 +11,9 @@ from natsort import natsorted  # pip install natsort
 from tqdm import tqdm  # pip install tqdm
 
 from .cli import exit_session
-from .consts import CACHE_PATH, EXIT_FAILURE, MAX_TIMEOUT, MULTIPROCESSING_THREADS
+from .consts import (CACHE_PATH, EXIT_FAILURE, MAX_TIMEOUT,
+                     MULTIPROCESSING_THREADS)
 from .logs import logger
-from .personal_utils import *
 
 manager = Manager()
 invalid_url_list = manager.list()
@@ -196,12 +197,13 @@ def get_urls_from_file(file_path: str) -> list:
     logger.debug("Reading URLs from file: %s" % file_path)
 
     try:
-        # Open the file with utf-8 encoding and parse each line as a URL
-        content = read_file(file_path)
-    except Exception as e:
+        with open(file_path, "r", encoding="utf-8") as file:
+            content = file.readlines()
+    except FileNotFoundError as e:
         # If the file is not found, log an error and exit the program with an error code
         logger.error(e)
         exit_session(EXIT_FAILURE)
+    # Parse each line as a URL
     return [parse_url(line) for line in content]
 
 
@@ -215,7 +217,8 @@ def save_urls_to_file(url_list: list, file_path: str) -> None:
     """
     logger.debug("Saving URLs to file: %s" % file_path)
     try:
-        write_file(file_path, "\n".join(url_list))
+        with open(file_path, "w", encoding="utf-8") as file:
+            file.writelines("\n".join(url_list))
     except FileNotFoundError as e:
         # If the file is not found, log an error and exit the program with an error code
         logger.error(e)
@@ -237,7 +240,7 @@ def merge_content(data: list, file_path: str) -> list:
 
     file_data = get_urls_from_file(file_path)
     # Remove duplicates from the merged data
-    merged_data = remove_duplicates(data + file_data)
+    merged_data = list(set(data + file_data))
     # Sort the merged data in natural order
     return natsorted(merged_data)
 
