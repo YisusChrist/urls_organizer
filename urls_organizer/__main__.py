@@ -22,15 +22,16 @@ from .cli import check_updates, exit_session, get_parsed_args, print_help
 from .consts import (DEBUG, EXIT_FAILURE, EXIT_SUCCESS, INVALID_URLS_FILE,
                      PROFILE)
 from .logs import logger
-from .personal_utils import ensure_exists
 from .urls import (get_invalid_urls, get_urls_from_file, merge_content,
                    parse_url, save_urls_to_file, validate_url_list)
+from .utils import ensure_exists
 
 
 def main():
     """
     Main function of the script.
     """
+    install(show_locals=DEBUG)
     args = get_parsed_args()
     logger.info("Starting session...")
 
@@ -88,7 +89,6 @@ def main():
 
 if __name__ == "__main__":
     # Enable rich error formatting in debug mode
-    install(show_locals=DEBUG)
     if DEBUG:
         print("[yellow]Debug mode is enabled[/yellow]")
     if PROFILE:
