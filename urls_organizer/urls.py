@@ -198,11 +198,11 @@ def get_urls_from_file(file_path: str) -> list:
     try:
         # Open the file with utf-8 encoding and parse each line as a URL
         content = read_file(file_path)
-        return [parse_url(line) for line in content]
     except Exception as e:
         # If the file is not found, log an error and exit the program with an error code
         logger.error(e)
         exit_session(EXIT_FAILURE)
+    return [parse_url(line) for line in content]
 
 
 def save_urls_to_file(url_list: list, file_path: str) -> None:
