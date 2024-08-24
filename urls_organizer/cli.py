@@ -1,19 +1,19 @@
 """Command-line interface for the project."""
+
+import sys
 from argparse import ArgumentParser, ArgumentTypeError, Namespace
-from pathlib import Path
-from sys import exit
 
 import pyfiglet  # pip install pyfiglet
 import requests  # pip install requests
 from rich import print  # pip install rich
 from rich_argparse_plus import RichHelpFormatterPlus  # pip install rich-argparse-plus
-from string_grab import grab  # pip install string-grab
 
-from . import GITHUB
-from .consts import DESC, EXIT_FAILURE, LOG_PATH, NAME, VERSION
+from .consts import EXIT_FAILURE, GITHUB, LOG_PATH, PACKAGE
+from .consts import __desc__ as DESC
+from .consts import __version__ as VERSION
 from .logs import logger
 
-parser = None
+parser: ArgumentParser
 
 
 def check_positive(value: str) -> int:
@@ -44,16 +44,19 @@ def get_parsed_args() -> Namespace:
     """
     global parser
 
-    title = NAME.replace("_", " ").capitalize()
     f = pyfiglet.Figlet(font="slant", justify="center", width=80)
-    title = print(f"[green]{f.renderText(title)}[/]")
-    desc = print(
-        f"[cyan]{pyfiglet.figlet_format(DESC,font='term',justify='center',)}[/]"
+
+    title_str: str = PACKAGE.replace("_", " ").capitalize()
+    title: str = f"[green]{f.renderText(title_str)}"
+    version: str = f"[i][red]Version: {VERSION}"
+    desc: str = (
+        f"[blue]{pyfiglet.figlet_format(f'{DESC} - {version}', font='term', justify='center')}"
     )
+    repo: str = f"[cyan]{pyfiglet.figlet_format(GITHUB, font='term',justify='center')}"
     RichHelpFormatterPlus.choose_theme("prince")
 
     parser = ArgumentParser(
-        description=f"{title}{desc}",  # Program description
+        description=f"{title}{desc}{repo}",  # Program description
         formatter_class=RichHelpFormatterPlus,  # Custom help formatter
         allow_abbrev=False,  # Disable abbreviations
         add_help=False,  # Disable default help
@@ -119,7 +122,7 @@ def get_parsed_args() -> Namespace:
         "--version",
         action="version",
         help="Show version number and exit.",
-        version=f"[argparse.prog]{NAME}[/] version [i]{VERSION}[/]",
+        version=f"[argparse.prog]{PACKAGE}[/] version [i]{VERSION}[/]",
     )
 
     return parser.parse_args()
@@ -144,63 +147,27 @@ def exit_session(exit_value: int) -> None:
         )
 
     # Exit the program with the given exit value
-    exit(exit_value)
+    sys.exit(exit_value)
 
 
-def extract_header_key(key: str, file: str) -> str:
-    """
-    Extract the value associated with the given key from the header.
-
-    Args:
-        key (str): The key to extract from the header.
-
-    Returns:
-        str: The value associated with the key.
-
-    Raises:
-        KeyError: If the key is not found in the header.
-    """
-    try:
-        # Open the file and read its contents.
-        with open(file) as f:
-            content = f.read()
-        # Extract the value associated with the key.
-        return str(grab(content, start=f"@{key}", end="\n").strip())
-    except LookupError:
-        print(f"[red]Could not extract key '{key}' from header[/red]")
-        exit_session(EXIT_FAILURE)
-
-
-def check_updates():
+def check_updates() -> None:
     """
     Check if there is a newer version of the script available in the GitHub repository.
-
-    Returns:
-        str: A message indicating if there is a newer version available or not.
     """
-    logger.debug("Checking for updates...")
-
-    file = f"{NAME}/__main__.py"
-    if not Path(file).exists():
-        logger.error("Could not find the file '%s'" % file)
-        return
-
-    project = GITHUB.split("https://github.com/")[1]
-    repo_url = f"https://api.github.com/repos/{project}/releases/latest"
+    project: str = GITHUB.split("https://github.com/")[1]
+    repo_url: str = f"https://api.github.com/repos/{project}/releases/latest"
 
     try:
-        response = requests.get(repo_url)
+        response: requests.Response = requests.get(repo_url, timeout=5)
         response.raise_for_status()
-        latest_version = response.json()["tag_name"]
+
+        latest_version: str = response.json()["tag_name"]
         if latest_version != VERSION:
-            print(
-                f"\n[yellow]Newer version of the script available: {latest_version}.\n"
-                "Please consider updating your version.[/yellow]"
+            logger.warning(
+                "\n[yellow]Newer version of the script available: "
+                f"{latest_version}.\nPlease consider updating your version.[/]"
             )
 
-            logger.warning("Newer version of the script available: %s" % latest_version)
-        else:
-            logger.info("You are using the latest version of the script")
     except requests.exceptions.RequestException:
         logger.error("Could not check for updates")
 
