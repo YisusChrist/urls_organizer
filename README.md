@@ -126,7 +126,7 @@ If you prefer to install the program manually, follow these steps:
 2. Install the dependencies:
 
    ```bash
-   poetry install
+   poetry install --only main
    ```
 
 3. Run the following commands to install urls_organizer in your `/usr/bin/` directory:
